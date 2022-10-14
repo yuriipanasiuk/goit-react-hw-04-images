@@ -11,22 +11,8 @@ console.log(getPhoto);
 
 export class App extends Component {
   formSubmitHandler = data => {
-    getPhoto.query = data;
-
-    const res = getPhoto.fetchArticle();
-    res.then(x => console.log(x));
-    // console.log(res);
+    console.log(data);
   };
-
-  // async getRequest() {
-  //   try {
-  //     const res = await getPhoto.fetchArticle();
-  //     this.props.Images(res)
-
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // }
 
   render() {
     return (
