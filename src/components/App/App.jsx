@@ -4,10 +4,6 @@ import ImageGallery from 'components/Gallary/ImageGallery';
 import Loader from 'components/Loader';
 import Searchbar from 'components/Searchbar';
 import { Component } from 'react';
-import GetPhoto from 'components/AxiosImage/AxiosImage';
-
-const getPhoto = new GetPhoto();
-console.log(getPhoto);
 
 export class App extends Component {
   formSubmitHandler = data => {
