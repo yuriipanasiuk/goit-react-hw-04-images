@@ -1,14 +1,16 @@
-// import Modal from 'components/Modal';
+import { GalleryItem, ImageGallery } from './ImageGalleryItem.styled';
 
-const ImageGalleryItem = images => {
+const ImageGalleryItem = ({ image, tags, onClick, modalImage }) => {
   return (
     <>
-      {/* {images.map(image => (
-        <li>
-          <img src="" alt="" />
-        </li>
-      ))} */}
-      {/* <Modal /> */}
+      <GalleryItem>
+        <ImageGallery
+          src={image}
+          alt={tags}
+          onClick={onClick}
+          data-set={modalImage}
+        />
+      </GalleryItem>
     </>
   );
 };

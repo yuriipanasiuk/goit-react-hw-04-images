@@ -1,7 +1,6 @@
 import { TailSpin } from 'react-loader-spinner';
 
-const Loader = () => {
-  const visible = true;
+const Loader = ({ visible }) => {
   return (
     <TailSpin
       height="80"

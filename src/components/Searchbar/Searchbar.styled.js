@@ -1,19 +1,18 @@
 import styled from 'styled-components';
-import {
-  Form as FormicForm,
-  Field as FormicInput,
-  ErrorMessage as FormikError,
-} from 'formik';
+import // Form as FormicForm,
+// Field as FormicInput,
+// ErrorMessage as FormikError,
+'formik';
 
-export const ErrorMessage = styled(FormikError)`
-  position: absolute;
-  bottom: -40px;
-  width: 300px;
-  color: ${p => p.theme.colors.error};
-  margin-bottom: ${p => p.theme.space[4]}px;
-  font-size: ${p => p.theme.fontSizes.l};
-  text-align: center;
-`;
+// export const ErrorMessage = styled(FormikError)`
+//   position: absolute;
+//   bottom: -40px;
+//   width: 300px;
+//   color: ${p => p.theme.colors.error};
+//   margin-bottom: ${p => p.theme.space[4]}px;
+//   font-size: ${p => p.theme.fontSizes.l};
+//   text-align: center;
+// `;
 
 export const Header = styled.header`
   top: 0;
@@ -34,7 +33,7 @@ export const Header = styled.header`
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `;
 
-export const Form = styled(FormicForm)`
+export const Form = styled.form`
   display: flex;
   align-items: center;
   width: 300px;
@@ -64,7 +63,7 @@ export const SearchFormButton = styled.button`
   }
 `;
 
-export const Input = styled(FormicInput)`
+export const Input = styled.input`
   position: relative;
   display: inline-block;
   width: 100%;
