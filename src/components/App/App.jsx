@@ -10,6 +10,11 @@ import Loader from 'components/Loader';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import getImage from 'components/ApiService/ApiService';
+import Notice from 'components/Notice';
+import NoticeError from 'components/Notice/NoticeError';
+
+const Scroll = require('react-scroll');
+const scroll = Scroll.animateScroll;
 
 export class App extends Component {
   state = {
@@ -19,9 +24,12 @@ export class App extends Component {
     showLoader: false,
     image: '',
     tags: '',
+    showButton: false,
+    error: false,
   };
 
   componentDidUpdate(_, prevState) {
+    scroll.scrollToBottom();
     if (
       prevState.page !== this.state.page ||
       prevState.query !== this.state.query
@@ -31,15 +39,28 @@ export class App extends Component {
 
   fetchImage = async (page, query) => {
     try {
-      this.setState({ showLoader: true });
+      this.setState({
+        showLoader: true,
+        showButton: false,
+      });
+
       const imageItems = await getImage(page, query);
+      if (imageItems.length === 0) {
+        return toast.error('Please enter new image or photo name!');
+      }
       this.setState(prevState => ({
         items: [...prevState.items, ...imageItems],
+        showButton: true,
       }));
     } catch (error) {
-      console.log(error);
+      this.setState({
+        error: true,
+        showButton: false,
+      });
     } finally {
-      this.setState({ showLoader: false });
+      this.setState({
+        showLoader: false,
+      });
     }
   };
 
@@ -81,20 +102,24 @@ export class App extends Component {
   };
 
   render() {
-    const { showLoader, image, tags, items } = this.state;
+    const { showLoader, image, tags, items, query, showButton, error } =
+      this.state;
+
     return (
       <Box
         textAlign="center"
         pb="24px"
         ml="auto"
         mr="auto"
-        width="1280px"
+        width="1330px"
         as="section"
       >
         <Searchbar onSubmit={this.getImageName} />
+        {error && <NoticeError />}
         <ImageGallery onClick={this.onImageClick} items={items} />
-        <Loader visible={showLoader} />
-        <Button children="Load more" onClick={this.loadMore} />
+        <Loader visible={showLoader} notice={query} />
+        {!query && <Notice />}
+        {showButton && <Button children="Load more" onClick={this.loadMore} />}
         {image.length > 0 && (
           <Modal onClick={this.closeModal}>
             <img src={image} alt={tags} />

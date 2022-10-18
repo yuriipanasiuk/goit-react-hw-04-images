@@ -1,18 +1,4 @@
 import styled from 'styled-components';
-import // Form as FormicForm,
-// Field as FormicInput,
-// ErrorMessage as FormikError,
-'formik';
-
-// export const ErrorMessage = styled(FormikError)`
-//   position: absolute;
-//   bottom: -40px;
-//   width: 300px;
-//   color: ${p => p.theme.colors.error};
-//   margin-bottom: ${p => p.theme.space[4]}px;
-//   font-size: ${p => p.theme.fontSizes.l};
-//   text-align: center;
-// `;
 
 export const Header = styled.header`
   top: 0;

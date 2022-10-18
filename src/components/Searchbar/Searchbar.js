@@ -1,4 +1,3 @@
-// import { toast } from 'react-toastify';
 import { Header, Form, SearchFormButton, Input } from './Searchbar.styled';
 import { BsSearch } from 'react-icons/bs';
 import Box from 'components/Box';
