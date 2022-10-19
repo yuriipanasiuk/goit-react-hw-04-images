@@ -22,14 +22,17 @@ export class App extends Component {
     page: 1,
     items: [],
     showLoader: false,
-    image: '',
-    tags: '',
     showButton: false,
     error: false,
+    image: '',
+    tags: '',
   };
 
   componentDidUpdate(_, prevState) {
-    scroll.scrollToBottom();
+    if (prevState.items.length !== this.state.items.length) {
+      scroll.scrollToBottom();
+    }
+
     if (
       prevState.page !== this.state.page ||
       prevState.query !== this.state.query
