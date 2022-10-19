@@ -5,7 +5,7 @@ import { ImageGalleryList } from './ImageGallery.styled.js';
 
 const ImageGallery = ({ items, onClick }) => {
   return (
-    <Box>
+    <Box as="main">
       <ImageGalleryList>
         {items.map(({ id, webformatURL, largeImageURL, tags }) => (
           <ImageGalleryItem

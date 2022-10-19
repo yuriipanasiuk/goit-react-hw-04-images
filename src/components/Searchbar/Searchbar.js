@@ -13,7 +13,7 @@ class Searchbar extends Component {
 
   render() {
     return (
-      <Box mb={4}>
+      <Box mb={4} as="header">
         <Header>
           <Form onSubmit={this.handleSubmit}>
             <SearchFormButton type="submit">
