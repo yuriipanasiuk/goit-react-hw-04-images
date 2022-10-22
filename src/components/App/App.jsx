@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'components/Box';
 
 import Searchbar from 'components/Searchbar';
@@ -16,60 +16,45 @@ import NoticeError from 'components/Notice/NoticeError';
 const Scroll = require('react-scroll');
 const scroll = Scroll.animateScroll;
 
-export class App extends Component {
-  state = {
-    query: '',
-    page: 1,
-    items: [],
-    showLoader: false,
-    showButton: false,
-    error: false,
-    image: '',
-    tags: '',
-  };
+export default function App() {
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState([]);
+  const [showLoader, setShowLoader] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const [error, setError] = useState(false);
+  const [image, setImage] = useState(null);
+  const [tags, setTags] = useState('');
 
-  componentDidUpdate(_, prevState) {
-    if (prevState.items.length !== this.state.items.length) {
-      scroll.scrollToBottom();
+  useEffect(() => {
+    if (query === '') {
+      return;
     }
 
-    if (
-      prevState.page !== this.state.page ||
-      prevState.query !== this.state.query
-    )
-      this.fetchImage(this.state.page, this.state.query);
-  }
+    fetchImage(page, query);
+  }, [page, query]);
 
-  fetchImage = async (page, query) => {
+  const fetchImage = async (page, query) => {
     try {
-      this.setState({
-        showLoader: true,
-        showButton: false,
-      });
+      setShowLoader(true);
+      setShowButton(false);
 
       const imageItems = await getImage(page, query);
       if (imageItems.length === 0) {
         return toast.error('Please enter new image or photo name!');
       }
-      this.setState(prevState => ({
-        items: [...prevState.items, ...imageItems],
-        showButton: true,
-      }));
+      setItems(items => [...items, ...imageItems]);
+      setShowButton(true);
+      scroll.scrollToBottom();
     } catch (error) {
-      this.setState({
-        error: true,
-        showButton: false,
-      });
+      setError(true);
+      setShowButton(false);
     } finally {
-      this.setState({
-        showLoader: false,
-      });
+      setShowLoader(false);
     }
   };
 
-  getImageName = data => {
-    const { query } = this.state;
-
+  const getImageName = data => {
     if (data === '') {
       return toast.error('Please enter image or photo name!');
     }
@@ -77,59 +62,46 @@ export class App extends Component {
       return toast.warning(`${query} has already been found`);
     }
 
-    this.setState({
-      query: data,
-      items: [],
-      page: 1,
-    });
+    setQuery(data);
+    setItems([]);
+    setPage(1);
   };
 
-  onImageClick = e => {
-    this.setState({
-      image: e.target.dataset.set,
-      tags: e.target.alt,
-    });
+  const onImageClick = e => {
+    setImage(e.target.dataset.set);
+    setTags(e.target.alt);
   };
 
-  closeModal = () => {
-    this.setState({
-      image: '',
-      tags: '',
-    });
+  const loadMore = () => {
+    setPage(page => page + 1);
   };
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+  const closeModal = () => {
+    setImage(null);
+    setTags('');
   };
 
-  render() {
-    const { showLoader, image, tags, items, query, showButton, error } =
-      this.state;
-
-    return (
-      <Box
-        textAlign="center"
-        pb="24px"
-        ml="auto"
-        mr="auto"
-        width="1330px"
-        as="section"
-      >
-        <Searchbar onSubmit={this.getImageName} />
-        {error && <NoticeError />}
-        <ImageGallery onClick={this.onImageClick} items={items} />
-        <Loader visible={showLoader} notice={query} />
-        {!query && <Notice />}
-        {showButton && <Button children="Load more" onClick={this.loadMore} />}
-        {image.length > 0 && (
-          <Modal onClick={this.closeModal}>
-            <img src={image} alt={tags} />
-          </Modal>
-        )}
-        <ToastContainer autoClose={3000} theme="light" />
-      </Box>
-    );
-  }
+  return (
+    <Box
+      textAlign="center"
+      pb="24px"
+      ml="auto"
+      mr="auto"
+      width="1330px"
+      as="section"
+    >
+      <Searchbar onSubmit={getImageName} />
+      {error && <NoticeError />}
+      <ImageGallery onClick={onImageClick} items={items} />
+      <Loader visible={showLoader} />
+      {!query && <Notice />}
+      {showButton && <Button children="Load more" onClick={loadMore} />}
+      {image && (
+        <Modal onClick={closeModal}>
+          <img src={image} alt={tags} />
+        </Modal>
+      )}
+      <ToastContainer autoClose={3000} theme="light" />
+    </Box>
+  );
 }

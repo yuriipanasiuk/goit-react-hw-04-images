@@ -3,23 +3,21 @@ import Box from 'components/Box';
 import ImageGalleryItem from '../ImageGalleryItem';
 import { ImageGalleryList } from './ImageGallery.styled.js';
 
-const ImageGallery = ({ items, onClick }) => {
-  return (
-    <Box as="main">
-      <ImageGalleryList>
-        {items.map(({ id, webformatURL, largeImageURL, tags }) => (
-          <ImageGalleryItem
-            key={id}
-            image={webformatURL}
-            tags={tags}
-            onClick={onClick}
-            modalImage={largeImageURL}
-          />
-        ))}
-      </ImageGalleryList>
-    </Box>
-  );
-};
+const ImageGallery = ({ items, onClick }) => (
+  <Box as="main">
+    <ImageGalleryList>
+      {items.map(({ id, webformatURL, largeImageURL, tags }) => (
+        <ImageGalleryItem
+          key={id}
+          image={webformatURL}
+          tags={tags}
+          onClick={onClick}
+          modalImage={largeImageURL}
+        />
+      ))}
+    </ImageGalleryList>
+  </Box>
+);
 
 ImageGallery.propTypes = {
   items: PropTypes.arrayOf(
