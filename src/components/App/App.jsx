@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from 'components/Box';
 
 import Searchbar from 'components/Searchbar';
@@ -31,28 +31,31 @@ export default function App() {
       return;
     }
 
+    async function fetchImage(page, query) {
+      try {
+        setShowLoader(true);
+        setShowButton(false);
+
+        const imageItems = await getImage(page, query);
+
+        if (imageItems.length === 0) {
+          return toast.error('Please enter new image or photo name!');
+        }
+
+        setItems(items => [...items, ...imageItems]);
+        setShowButton(true);
+
+        scroll.scrollToBottom();
+      } catch (error) {
+        setError(true);
+        setShowButton(false);
+      } finally {
+        setShowLoader(false);
+      }
+    }
+
     fetchImage(page, query);
   }, [page, query]);
-
-  const fetchImage = async (page, query) => {
-    try {
-      setShowLoader(true);
-      setShowButton(false);
-
-      const imageItems = await getImage(page, query);
-      if (imageItems.length === 0) {
-        return toast.error('Please enter new image or photo name!');
-      }
-      setItems(items => [...items, ...imageItems]);
-      setShowButton(true);
-      scroll.scrollToBottom();
-    } catch (error) {
-      setError(true);
-      setShowButton(false);
-    } finally {
-      setShowLoader(false);
-    }
-  };
 
   const getImageName = data => {
     if (data === '') {

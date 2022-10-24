@@ -8,6 +8,7 @@ const FILTER_RESPONSE = `image_type=photo&orientation=horizontal`;
 const getImage = async (page, query) => {
   const url = `?q=${query}&page=${page}&key=${API_KEY}&${FILTER_RESPONSE}&per_page=12`;
   const res = await axios.get(url);
+
   return res.data.hits;
 };
 
