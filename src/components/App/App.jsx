@@ -8,7 +8,6 @@ import Searchbar from 'components/Searchbar';
 import ImageGallery from 'components/Gallary/ImageGallery';
 import Loader from 'components/Loader';
 import Button from 'components/Button';
-import Modal from 'components/Modal';
 import getImage from 'components/ApiService/ApiService';
 import Notice from 'components/Notice';
 import NoticeError from 'components/Notice/NoticeError';
@@ -23,8 +22,6 @@ export default function App() {
   const [showLoader, setShowLoader] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [error, setError] = useState(false);
-  const [image, setImage] = useState(null);
-  const [tags, setTags] = useState('');
 
   useEffect(() => {
     if (query === '') {
@@ -70,18 +67,8 @@ export default function App() {
     setPage(1);
   };
 
-  const onImageClick = e => {
-    setImage(e.target.dataset.set);
-    setTags(e.target.alt);
-  };
-
   const loadMore = () => {
     setPage(page => page + 1);
-  };
-
-  const closeModal = () => {
-    setImage(null);
-    setTags('');
   };
 
   return (
@@ -95,15 +82,10 @@ export default function App() {
     >
       <Searchbar onSubmit={getImageName} />
       {error && <NoticeError />}
-      <ImageGallery onClick={onImageClick} items={items} />
+      <ImageGallery items={items} />
       <Loader visible={showLoader} />
       {!query && <Notice />}
       {showButton && <Button children="Load more" onClick={loadMore} />}
-      {image && (
-        <Modal onClick={closeModal}>
-          <img src={image} alt={tags} />
-        </Modal>
-      )}
       <ToastContainer autoClose={3000} theme="light" />
     </Box>
   );
