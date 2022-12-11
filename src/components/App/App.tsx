@@ -1,24 +1,31 @@
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
-import React, { useEffect, useState } from 'react';
-import Box from 'components/Box';
+import { useEffect, useState } from 'react';
+import Box from '../Box';
 
-import Searchbar from 'components/Searchbar';
-import ImageGallery from 'components/Gallary/ImageGallery';
-import Loader from 'components/Loader';
-import Button from 'components/Button';
-import getImage from 'components/ApiService/ApiService';
-import Notice from 'components/Notice';
-import NoticeError from 'components/Notice/NoticeError';
+import Searchbar from '../Searchbar';
+import ImageGallery from '../Gallary/ImageGallery';
+import Loader from '../Loader';
+import Button from '../Button';
+import getImage from '../ApiService/ApiService';
+import Notice from '../Notice';
+import NoticeError from '../Notice/NoticeError';
 
 const Scroll = require('react-scroll');
 const scroll = Scroll.animateScroll;
 
+interface IState {
+  id: number;
+  webformatURL: string;
+  largeImageURL: string;
+  tags: string;
+}
+
 export default function App() {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<IState[]>([]);
   const [showLoader, setShowLoader] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [error, setError] = useState(false);
@@ -28,7 +35,7 @@ export default function App() {
       return;
     }
 
-    async function fetchImage(page, query) {
+    async function fetchImage(page: number, query: string) {
       try {
         setShowLoader(true);
         setShowButton(false);
@@ -54,7 +61,7 @@ export default function App() {
     fetchImage(page, query);
   }, [page, query]);
 
-  const getImageName = data => {
+  const getImageName = (data: string) => {
     if (data === '') {
       return toast.error('Please enter image or photo name!');
     }
@@ -85,7 +92,9 @@ export default function App() {
       <ImageGallery items={items} />
       <Loader visible={showLoader} />
       {!query && <Notice />}
-      {showButton && <Button children="Load more" onClick={loadMore} />}
+      {showButton && (
+        <Button type="button" children="Load more" onClick={loadMore} />
+      )}
       <ToastContainer autoClose={3000} theme="light" />
     </Box>
   );

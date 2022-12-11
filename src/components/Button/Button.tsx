@@ -1,6 +1,12 @@
 import { StyledButton } from './Button.styled';
 
-const Button = ({ type = 'button', children, onClick }) => (
+interface IProps {
+  children: string;
+  onClick: () => void;
+  type: 'button';
+}
+
+const Button = ({ type, children, onClick }: IProps) => (
   <StyledButton type={type} onClick={onClick}>
     {children}
   </StyledButton>

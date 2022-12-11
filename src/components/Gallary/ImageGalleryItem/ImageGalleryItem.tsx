@@ -1,20 +1,34 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { GalleryItem, ImageGallery } from './ImageGalleryItem.styled';
-import Modal from 'components/Modal';
+import Modal from '../../Modal';
 
-export default function ImageGalleryItem({ webformatURL, largeImageURL, alt }) {
-  const [image, setImage] = useState(null);
+interface IProps {
+  webformatURL: string;
+  largeImageURL: string;
+  alt: string;
+}
+
+export default function ImageGalleryItem({
+  webformatURL,
+  largeImageURL,
+  alt,
+}: IProps) {
+  const [image, setImage] = useState('');
   const [tags, setTags] = useState('');
 
   const closeModal = () => {
-    setImage(null);
+    setImage('');
     setTags('');
   };
 
-  const onImageClick = e => {
-    setImage(e.target.dataset.set);
-    setTags(e.target.alt);
+  const onImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    const target = e.target as typeof e.target & {
+      dataset: { set: string };
+      alt: string;
+    };
+
+    setImage(target.dataset.set);
+    setTags(target.alt);
   };
 
   return (
@@ -33,9 +47,3 @@ export default function ImageGalleryItem({ webformatURL, largeImageURL, alt }) {
     </GalleryItem>
   );
 }
-
-ImageGalleryItem.propTypes = {
-  webformatURL: PropTypes.string.isRequired,
-  tags: PropTypes.string,
-  largeImageURL: PropTypes.string.isRequired,
-};

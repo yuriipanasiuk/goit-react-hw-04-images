@@ -1,13 +1,21 @@
 import { Header, Form, SearchFormButton, Input } from './Searchbar.styled';
 import { BsSearch } from 'react-icons/bs';
-import Box from 'components/Box';
+import Box from '../Box';
 
-export default function Searchbar({ onSubmit }) {
-  const handleSubmit = e => {
+interface IProps {
+  onSubmit: (value: string) => void;
+}
+
+export default function Searchbar({ onSubmit }: IProps) {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const value = e.target.query.value;
-    onSubmit(value);
-    e.target.reset();
+
+    const value = e.target as typeof e.target & {
+      query: { value: string };
+    };
+
+    onSubmit(value.query.value);
+    e.currentTarget.reset();
   };
 
   return (
@@ -21,7 +29,7 @@ export default function Searchbar({ onSubmit }) {
           <Input
             type="text"
             name="query"
-            autocomplete="off"
+            autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
           />

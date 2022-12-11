@@ -2,9 +2,23 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { StyledModal, Backdrop } from './Modal.styled';
 
-const modalRoot = document.querySelector('#modal-root');
+const modalRoot = document.querySelector('#modal-root') as HTMLElement;
 
-export default function Modal({ children, onClick }) {
+interface IComponentProps {
+  children: JSX.Element;
+  onClick: () => void;
+}
+
+interface IHandleKeyDown {
+  code: string;
+}
+
+interface IhandleBackdropClick {
+  target: object;
+  currentTarget: object;
+}
+
+export default function Modal({ children, onClick }: IComponentProps) {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
 
@@ -13,13 +27,16 @@ export default function Modal({ children, onClick }) {
     };
   });
 
-  const handleKeyDown = ({ code }) => {
+  const handleKeyDown = ({ code }: IHandleKeyDown) => {
     if (code === 'Escape') {
       onClick();
     }
   };
 
-  const handleBackdropClick = ({ target, currentTarget }) => {
+  const handleBackdropClick = ({
+    target,
+    currentTarget,
+  }: IhandleBackdropClick) => {
     if (target === currentTarget) {
       onClick();
     }
